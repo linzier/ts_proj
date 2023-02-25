@@ -16,9 +16,9 @@ interface HSV {
     value: number;
 }
 
-function f(color: RGB | HSV) {
+function fas(color: RGB | HSV) {
     if ('red' in color) {
         console.log(color.red)
     }
 }
-f({ red: 233, green: 56, blue: 44 })
+fas({ red: 233, green: 56, blue: 44 })

@@ -127,8 +127,7 @@ setTimeout(() => {
     process.exit(0)
 }, 3000)
 
-
 function f() {
-    console.log('================ddd', this === global)
+    console.log('================ddd')
 }
 f()

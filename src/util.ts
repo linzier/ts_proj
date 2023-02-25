@@ -10,8 +10,3 @@ const options = {
     type: 'string',
   },
 };
-const {
-  values,
-  positionals,
-} = parseArgs({ options });
-console.log(values, positionals);

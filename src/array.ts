@@ -13,23 +13,6 @@ const sum = arr1.reduce((p1, p2) => {
 })
 // console.log(sum)
 
-// 斐波那契函数
-// n 从 1 开始
-const m = new Map()
-function fibonacci(n: number): number {
-    if (n < 3) {
-        return 1
-    }
-
-    if (m.has(n)) {
-        return m.get(n)
-    }
-
-    const v = fibonacci(n - 1) + fibonacci(n - 2)
-    m.set(n, v)
-
-    return v
-}
 // for (let i = 1; i <= 100; i++) {
 //     console.log('fibonacci:', fibonacci(i))
 // }
@@ -132,5 +115,14 @@ console.log('flat:', arr8)
 let arr9 = ['I am linvanda', 'I come from China']
 arr9 = arr9.flatMap((ele) => ele.split(' '))
 console.log('flatMap:', arr9)
+
+// 打平一层
+function flatOne(arr: unknown[]): unknown[] {
+    return arr.reduce((prev, curr) => {
+        return (prev as unknown[]).concat(curr)
+    }, []) as unknown[]
+}
+
+console.log('flatOne:', flatOne([1, [2, 3], [[4, 5]], 6]))
 
 export {}

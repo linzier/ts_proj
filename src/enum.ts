@@ -4,7 +4,7 @@ enum En {
 
 const s: En = 'df' as En
 
-function f() {
+function ffa() {
     let cnt = 0
     return () => {
         return cnt++
