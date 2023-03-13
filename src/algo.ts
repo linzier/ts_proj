@@ -456,4 +456,78 @@ function innerQuickSort<T>(arr: T[], start: number, end: number) {
 // console.timeEnd('quicksort')
 // console.log('quick sort:', arr9)
 
+// 背包问题
+// 递归写法
+// 有 N 件物品(v.length)和一个容量是 V 的背包。每件物品有且只有一件
+// 第 i 件物品的体积是 v[i] ，价值是 w[i] 
+// 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大
+// v.length == w.length
+// @return 最大价值
+function backpack(v: number[], w: number[], V: number): number {
+    return innerBackpack(v, w, 0, V)
+}
+
+// 该函数能够算出背包容量在 currV，持有价值在 currW 的情况下，从 v[i:] 子背包中能够装入的最大价值
+function innerBackpack(v: number[], w: number[], i: number, currV: number): number {
+    if (i >= v.length || currV <= 0) {
+        return 0
+    }
+
+    // 两种情况：使用本步骤的物品；不使用本步骤的物品
+
+    // 使用本步骤物品，前提是空间足够
+    let w1 = 0
+    if (v[i] <= currV) {
+        // 加上价值，减去体积
+        w1 = w[i] + innerBackpack(v, w, i + 1, currV - v[i])
+    }
+
+    // 不使用本步骤物品
+    const w2 = innerBackpack(v, w, i + 1, currV)
+    
+    // 取两者最大的
+    return Math.max(w1, w2)
+}
+
+const V = 5, v = [4,2,3,3], w = [4,2,3,4]
+console.log('backpack:', backpack(v, w, V))
+
+// 背包问题：使用动态规划求解
+// 其中 V 是正整数
+function backpack2(v: number[], w: number[], V: number): number {
+    // 动态规划二维数组
+    // 行数(i)：表示背包容量，范围：1~V
+    // 列数(j)：表示商品编号，走到第 j 步，可以选择该步以及前面的商品
+    // dp[i][j] 的含义：在可用背包容量为 i 且可用商品为[0-j]号的情况下的最大价值
+    const dp: number[][] = new Array(V + 1)
+    for (let i = 0; i < V + 1; i++) {
+        dp[i] = new Array(v.length).fill(0)
+    }
+
+    // 初始值：填充第一列（只有第一个商品时各容量下的最大值）
+    const v0 = v[0], w0 = w[0]
+    for (let i = 1; i <= V; i++) {
+        dp[i][0] = v0 <= i ? w0 : 0
+    }
+    
+    // 填充方向：从左到右填，即先填满相同容量下不同商品的情况
+    let sel1 = 0, sel2 = 0
+    for (let i = 1; i <= V; i++) {
+        // 从第 2 列开始
+        for (let j = 1; j < v.length; j++) {
+            // 选择一：不使用本步骤的商品，则当前价值直接取前一列的
+            sel1 = dp[i][j - 1]
+            sel2 = v[j] > i ? 0 : w[j] + dp[i - v[j]][j - 1]
+
+            dp[i][j] = Math.max(sel1, sel2)
+        }
+    }
+
+    // 最终选右下角的值
+    return dp[V][v.length - 1]
+}
+
+const V2 = 5, v2 = [4,2,3,3], w2 = [4,2,3,4]
+console.log('backpack2:', backpack2(v2, w2, V2))
+
 export {}
